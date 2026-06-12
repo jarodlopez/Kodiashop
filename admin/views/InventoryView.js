@@ -15,7 +15,7 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
         <form onSubmit={(e) => { handleProductSubmit(e); closeForm(); }} className="space-y-4 bg-zinc-950 h-max">
             {/* Mobile sheet header — sticky at top inside sheet */}
             <div className="form-sheet-header flex items-center justify-between px-4 py-3 border-b border-zinc-800 sticky top-0 bg-zinc-950 z-10">
-                <h3 className="font-bebas text-2xl text-kuraRed">{editingId ? 'EDITAR PRENDA' : 'NUEVA PRENDA'}</h3>
+                <h3 className="font-bebas text-2xl text-kuraRed">{editingId ? 'EDITAR PRODUCTO' : 'NUEVO PRODUCTO'}</h3>
                 <div className="flex items-center gap-3">
                     {editingId && <button type="button" onClick={cancelEdit} className="text-xs text-zinc-500 underline">Cancelar</button>}
                     <button type="button" onClick={closeForm} className="text-zinc-400 text-xl font-bold p-1 leading-none">✕</button>
@@ -25,7 +25,7 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
             <div className="p-4 space-y-4">
                 {/* Desktop header (only visible in desk-form, not in sheet since sheet-header covers it) */}
                 <div className="hidden-in-sheet flex justify-between items-end border-b border-zinc-800 pb-4">
-                    <h2 className="font-bebas text-3xl text-kuraRed">{editingId ? 'EDITAR PRENDA' : 'NUEVA PRENDA'}</h2>
+                    <h2 className="font-bebas text-3xl text-kuraRed">{editingId ? 'EDITAR PRODUCTO' : 'NUEVO PRODUCTO'}</h2>
                     {editingId && <button type="button" onClick={cancelEdit} className="text-xs text-zinc-500 underline">Cancelar Edición</button>}
                 </div>
 
@@ -107,7 +107,7 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
 
                 <button type="submit" disabled={isSaving} className="brutalist-btn w-full flex items-center justify-center gap-2">
                     {isSaving && <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></span>}
-                    {editingId ? 'ACTUALIZAR PRENDA' : 'AÑADIR AL CATÁLOGO'}
+                    {editingId ? 'GUARDAR PRODUCTO' : 'AÑADIR AL CATÁLOGO'}
                 </button>
             </div>
         </form>
@@ -177,7 +177,7 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
                                         window.scrollTo({ top: 0, behavior: 'smooth' });
                                     }} className="flex-1 text-xs text-zinc-400 py-2 hover:bg-zinc-800 transition-colors border-r border-zinc-800">EDITAR</button>
                                     <button onClick={async () => {
-                                        if (window.confirm('¿Seguro que quieres borrar esta prenda?')) {
+                                        if (window.confirm('¿Seguro que quieres borrar este producto?')) {
                                             await db.collection('products').doc(p.id).delete(); fetchProducts();
                                         }
                                     }} className="flex-1 text-xs text-red-500 font-bold py-2 hover:bg-red-900 transition-colors">ELIMINAR</button>
@@ -186,7 +186,7 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
                         ))}
                     </div>
                     {filteredInventory.length === 0 && (
-                        <p className="text-center text-zinc-600 py-10 font-bebas text-2xl tracking-widest">NO HAY PRENDAS EN ESTA CATEGORÍA</p>
+                        <p className="text-center text-zinc-600 py-10 font-bebas text-2xl tracking-widest">NO HAY PRODUCTOS EN ESTA CATEGORÍA</p>
                     )}
                 </div>
             </div>

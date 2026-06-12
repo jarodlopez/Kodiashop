@@ -246,7 +246,7 @@ window.DesignView = ({ storeConfig, slideForm, setSlideForm, uniqueCategories,
                 {features.sizeGuide !== false && (
                 <div className="border border-zinc-800 p-5 bg-zinc-950 rounded-2xl overflow-hidden">
                     <h2 className="font-bebas text-3xl text-kuraRed mb-3">GUÍA DE MEDIDAS GLOBAL</h2>
-                    <p className="text-xs text-zinc-400 mb-5 leading-relaxed">Sube una imagen con la tabla de medidas. Aparecerá cuando el cliente toque "Guía de Medidas" al ver una prenda.</p>
+                    <p className="text-xs text-zinc-400 mb-5 leading-relaxed">Sube una imagen con la tabla de medidas. Aparecerá cuando el cliente toque "Guía de Medidas" al ver un producto.</p>
                     <div className="border border-zinc-800 p-4 bg-black mb-5">
                         <p className="text-xs text-zinc-500 mb-2 font-bold">SUBIR O REEMPLAZAR IMAGEN</p>
                         <input type="file" accept="image/*" onChange={handleSizeGuideUpload} className="text-xs w-full text-zinc-400 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-xs file:font-bold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700" />

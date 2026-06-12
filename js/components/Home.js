@@ -140,7 +140,7 @@ window.HomeView = ({ storeConfig, filteredProducts, products, activeCategory, se
                         <div className="relative w-full md:w-64">
                             <input
                                 type="text"
-                                placeholder="BUSCAR PRENDA..."
+                                placeholder="BUSCAR PRODUCTO..."
                                 value={searchQuery}
                                 onChange={e => setSearchQuery(e.target.value)}
                                 className="w-full bg-zinc-950 border border-zinc-800 text-white px-4 py-2 text-xs outline-none focus:border-kuraRed transition-colors pr-8 rounded-xl"

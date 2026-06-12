@@ -143,7 +143,7 @@ window.OrdersView = ({ orders, filteredOrders, selectedOrder, setSelectedOrder,
 
             {/* ORDER DETAIL MODAL */}
             {selectedOrder && (
-                <div className="fixed inset-0 z-[350] bg-black/90 flex items-end justify-center backdrop-blur-sm" onClick={() => setSelectedOrder(null)} style={{ alignItems: 'flex-end' }}>
+                <div className="fixed inset-0 z-[600] bg-black/90 flex items-end justify-center backdrop-blur-sm" onClick={() => setSelectedOrder(null)} style={{ alignItems: 'flex-end' }}>
                     <div className="bg-zinc-950 border border-zinc-800 w-full max-w-4xl max-h-[92vh] overflow-y-auto animate-slideUp flex flex-col shadow-2xl" onClick={e => e.stopPropagation()} style={{ borderRadius: '12px 12px 0 0' }}>
                         {/* Modal header */}
                         <div className="flex items-center justify-between p-4 border-b border-zinc-800 sticky top-0 bg-zinc-950 z-10">
