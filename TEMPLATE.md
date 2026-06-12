@@ -35,10 +35,22 @@ sin tocar código.
 1. **Clona este repo** a un repositorio nuevo del cliente.
 2. **Crea un proyecto Firebase**: activa Firestore y Authentication (Email/Password). Crea el primer usuario admin en Authentication.
 3. **Crea una cuenta ImgBB** (hosting de imágenes) y copia su API key.
-4. **Reemplaza los placeholders** (busca `TU_FIREBASE_API_KEY`, `TU_PROYECTO`, `TU_IMGBB_API_KEY`):
-   - `index.html`, `product.html`, `checkout.html`, `admin/index.html`, `middleware.js`
-5. **Ajusta el SEO estático** (busca `MI TIENDA` y `mitienda.vercel.app`):
-   - `index.html` (title, meta, JSON-LD — cambia `@type` al rubro: `ClothingStore`, `HardwareStore`, `Store`), `product.html`, `checkout.html`, `middleware.js` (`BRAND`, `SITE`), `sitemap.xml`, `robots.txt`
+4. **Configura las variables de entorno en Vercel** (Settings → Environment Variables):
+
+   | Variable | Descripción |
+   |---|---|
+   | `FIREBASE_API_KEY` | API key del proyecto Firebase |
+   | `FIREBASE_PROJECT_ID` | ID del proyecto Firebase (ej. `mi-tienda-abc12`) |
+   | `IMGBB_API_KEY` | API key de ImgBB para subida de imágenes |
+   | `SITE_URL` | URL pública del sitio (ej. `https://mitienda.vercel.app`) |
+   | `SITE_BRAND` | Nombre de la tienda para meta tags de bots (ej. `KURA STUDIO`) |
+
+   Las credenciales **nunca se hardcodean** en el código: el frontend las pide al endpoint
+   `/api/config` en cada carga (cacheado 1 h en el CDN de Vercel), y el middleware Edge
+   las lee desde `process.env`.
+
+5. **Ajusta el SEO estático** (lo que no puede venir de env vars):
+   - `index.html` (title, meta, JSON-LD — cambia `@type` al rubro: `ClothingStore`, `HardwareStore`, `Store`), `product.html`, `checkout.html`, `sitemap.xml`, `robots.txt`
 6. **Compila y despliega**: `npm install && npm run build`, push a GitHub y conecta el repo en Vercel (no necesita build en Vercel: `vercel.json` ya lo desactiva, los `dist/` van commiteados).
 7. **Primer login en `/admin`**: el primer usuario queda como super admin. Configura Marca, Pagos, Envíos y apaga los módulos que el cliente no use.
 8. **Firestore Rules** (recomendado): restringe escritura de `settings/*`, `products`, `discountCodes`, `popupBanners` a usuarios autenticados; `orders` permite create público y lectura/edición autenticada.

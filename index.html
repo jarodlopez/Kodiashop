@@ -59,19 +59,15 @@
 </head>
 <body>
     <div id="root"></div>
-    <script>
-        // PLANTILLA: reemplaza con el proyecto Firebase y la key de ImgBB del cliente
-        var firebaseConfig = {
-            apiKey: "TU_FIREBASE_API_KEY",
-            authDomain: "TU_PROYECTO.firebaseapp.com",
-            projectId: "TU_PROYECTO"
-        };
-        var IMGBB_API_KEY = "TU_IMGBB_API_KEY";
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        var db = firebase.firestore();
+    <script type="module">
+        const cfg = await fetch('/api/config').then(r => r.json());
+        if (!firebase.apps.length) { firebase.initializeApp({ apiKey: cfg.apiKey, authDomain: cfg.authDomain, projectId: cfg.projectId }); }
+        window.db = firebase.firestore();
+        window.IMGBB_API_KEY = cfg.imgbbApiKey;
+        const s = document.createElement('script');
+        s.src = '/dist/app.js';
+        document.head.appendChild(s);
     </script>
-    <!-- App pre-compilada (JSX ya transpilado). Generado con `npm run build`. -->
-    <script src="/dist/app.js" defer></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

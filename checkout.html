@@ -22,16 +22,14 @@
 </head>
 <body>
     <div id="root"></div>
-    <script>
-        var firebaseConfig = {
-            apiKey: "TU_FIREBASE_API_KEY",
-            authDomain: "TU_PROYECTO.firebaseapp.com",
-            projectId: "TU_PROYECTO"
-        };
-        var IMGBB_API_KEY = "TU_IMGBB_API_KEY";
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        var db = firebase.firestore();
+    <script type="module">
+        const cfg = await fetch('/api/config').then(r => r.json());
+        if (!firebase.apps.length) { firebase.initializeApp({ apiKey: cfg.apiKey, authDomain: cfg.authDomain, projectId: cfg.projectId }); }
+        window.db = firebase.firestore();
+        window.IMGBB_API_KEY = cfg.imgbbApiKey;
+        const s = document.createElement('script');
+        s.src = '/dist/checkout.js';
+        document.head.appendChild(s);
     </script>
-    <script src="/dist/checkout.js" defer></script>
 </body>
 </html>
