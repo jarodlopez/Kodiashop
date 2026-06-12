@@ -5,6 +5,21 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
     const [formOpen, setFormOpen] = React.useState(false);
     const closeForm = () => setFormOpen(false);
 
+    const [newVariant, setNewVariant] = React.useState('');
+    React.useEffect(() => setNewVariant(''), [editingId]);
+
+    const addVariant = () => {
+        const v = newVariant.trim().toUpperCase();
+        if (!v || formData.sizes.includes(v)) { setNewVariant(''); return; }
+        setFormData(p => ({ ...p, sizes: [...p.sizes, v] }));
+        setNewVariant('');
+    };
+    const removeVariant = (v) => {
+        const newStock = { ...formData.stockBySizes };
+        delete newStock[v];
+        setFormData(p => ({ ...p, sizes: p.sizes.filter(x => x !== v), stockBySizes: newStock }));
+    };
+
     const cancelEdit = () => {
         setEditingId(null);
         setFormData({ title: '', sku: '', price: '', discountPrice: '', category: '', description: '', details: '', sizes: [], stockBySizes: {}, stock: '', images: [] });
@@ -54,19 +69,31 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
                 <textarea placeholder="DETALLES TÉCNICOS (UNO POR LÍNEA)" className="brutalist-input h-20 resize-none" value={formData.details} onChange={e => setFormData({ ...formData, details: e.target.value })} />
 
                 <div className="border-t border-zinc-800 pt-4">
-                    <p className="text-xs text-zinc-500 mb-2 font-bold tracking-widest">{variantLabel}S DISPONIBLES (opcional)</p>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                        {['S', 'M', 'L', 'XL', 'XXL', 'ÚNICA'].map(s => (
-                            <button key={s} type="button" onClick={() => {
-                                const newSizes = formData.sizes.includes(s) ? formData.sizes.filter(x => x !== s) : [...formData.sizes, s];
-                                const newStock = { ...formData.stockBySizes };
-                                if (!newSizes.includes(s)) delete newStock[s];
-                                setFormData(p => ({ ...p, sizes: newSizes, stockBySizes: newStock }));
-                            }} className={`px-4 py-2 font-bebas text-lg transition-colors border rounded-lg ${formData.sizes.includes(s) ? 'bg-kuraRed border-kuraRed text-black' : 'border-zinc-700 text-zinc-400 hover:text-white'}`}>{s}</button>
-                        ))}
+                    <p className="text-xs text-zinc-500 mb-2 font-bold tracking-widest">{variantLabel}S DISPONIBLES <span className="font-normal normal-case text-zinc-600">(opcional)</span></p>
+                    {formData.sizes.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-3">
+                            {formData.sizes.map(s => (
+                                <button key={s} type="button" onClick={() => removeVariant(s)}
+                                    className="px-3 py-1.5 font-bebas text-lg bg-kuraRed border border-kuraRed text-black rounded-lg flex items-center gap-1.5 leading-none">
+                                    {s} <span className="text-sm font-mono font-bold">×</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                    <div className="flex gap-2">
+                        <input
+                            type="text"
+                            placeholder={`Ej: S · 250g · ÚNICA · 3/4"`}
+                            className="brutalist-input mt-0 flex-1 text-sm"
+                            value={newVariant}
+                            onChange={e => setNewVariant(e.target.value)}
+                            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addVariant(); } }}
+                        />
+                        <button type="button" onClick={addVariant}
+                            className="px-4 border border-zinc-700 text-white font-bebas text-2xl hover:bg-zinc-800 transition-colors rounded-lg">+</button>
                     </div>
                     {formData.sizes.length > 0 && (
-                        <div className="space-y-2">
+                        <div className="mt-3 space-y-2">
                             <p className="text-[10px] text-zinc-500 font-bold tracking-widest">STOCK POR {variantLabel} <span className="text-zinc-600 font-normal normal-case">(vacío = sin límite)</span></p>
                             {formData.sizes.map(s => {
                                 const val = formData.stockBySizes?.[s];
@@ -115,10 +142,13 @@ window.InventoryView = ({ products, formData, setFormData, editingId, setEditing
 
     return (
         <div className="view-animate">
-            {/* Mobile form sheet */}
-            <div className={`form-sheet ${formOpen ? 'is-open' : ''}`}>
-                {renderForm()}
-            </div>
+            {/* Mobile form sheet — portaled to <body> para escapar de overflow containers (fix iOS Safari) */}
+            {ReactDOM.createPortal(
+                <div className={`form-sheet ${formOpen ? 'is-open' : ''}`}>
+                    {renderForm()}
+                </div>,
+                document.body
+            )}
 
             <div className="flex gap-6">
                 {/* Desktop sidebar form */}

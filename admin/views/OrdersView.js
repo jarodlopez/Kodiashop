@@ -141,8 +141,8 @@ window.OrdersView = ({ orders, filteredOrders, selectedOrder, setSelectedOrder,
                 </>
             )}
 
-            {/* ORDER DETAIL MODAL */}
-            {selectedOrder && (
+            {/* ORDER DETAIL MODAL — portaled to <body> para escapar de overflow containers (fix iOS Safari) */}
+            {selectedOrder && ReactDOM.createPortal(
                 <div className="fixed inset-0 z-[600] bg-black/90 flex items-end justify-center backdrop-blur-sm" onClick={() => setSelectedOrder(null)} style={{ alignItems: 'flex-end' }}>
                     <div className="bg-zinc-950 border border-zinc-800 w-full max-w-4xl max-h-[92vh] overflow-y-auto animate-slideUp flex flex-col shadow-2xl" onClick={e => e.stopPropagation()} style={{ borderRadius: '12px 12px 0 0' }}>
                         {/* Modal header */}
@@ -248,7 +248,7 @@ window.OrdersView = ({ orders, filteredOrders, selectedOrder, setSelectedOrder,
                         </div>
                     </div>
                 </div>
-            )}
+            , document.body)}
         </div>
     );
 };
